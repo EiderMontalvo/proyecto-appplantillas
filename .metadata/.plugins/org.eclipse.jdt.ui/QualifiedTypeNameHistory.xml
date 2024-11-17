@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="javax.swing.JLabel"/>
+    <fullyQualifiedTypeName name="java.awt.event.WindowAdapter"/>
+    <fullyQualifiedTypeName name="java.awt.event.WindowEvent"/>
+    <fullyQualifiedTypeName name="java.lang.Override"/>
+    <fullyQualifiedTypeName name="model.Empleado"/>
+    <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
+    <fullyQualifiedTypeName name="java.lang.Thread"/>
+</qualifiedTypeNameHistroy>

@@ -1,0 +1,97 @@
+package ui;
+
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.EventQueue;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+public class Planillas extends JFrame {
+
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> {
+            try {
+                Planillas frame = new Planillas();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public Planillas() {
+        setTitle("Sistema de Planillas");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 1024, 768);
+        setLayout(null); // Permitir posicionamiento manual
+        setUndecorated(true);
+
+        contentPane = new JPanel();
+        contentPane.setLayout(null);
+        setContentPane(contentPane);
+
+        crearBarraDeNavegacion();
+
+        JLabel fondoApp = new JLabel(new ImageIcon(getClass().getResource("/ui/img/fondoApp.png")));
+        fondoApp.setBounds(0, 50, 1024, 718); // Ajustado para que no tape otros elementos
+        contentPane.add(fondoApp);
+    }
+
+    private void crearBarraDeNavegacion() {
+        JPanel pnlNavBar = new JPanel();
+        pnlNavBar.setBackground(new Color(94, 17, 90));
+        pnlNavBar.setBounds(0, 0, 1024, 50); // Dimensiones de la barra superior
+        pnlNavBar.setLayout(null); // Permitir posicionamiento manual
+        contentPane.add(pnlNavBar);
+
+        // Redimensionar la imagen del logo
+        ImageIcon originalLogo = new ImageIcon(getClass().getResource("/ui/img/logo.png"));
+        Image resizedLogo = originalLogo.getImage().getScaledInstance(150, 30, Image.SCALE_SMOOTH); // Tamaño más grande
+        JLabel imgLogo = new JLabel(new ImageIcon(resizedLogo));
+        imgLogo.setBounds(10, 5, 130, 50); // Ajusta las dimensiones del logo redimensionado
+        pnlNavBar.add(imgLogo);
+
+        // Menú centrado
+        JPanel menuPanel = new JPanel(new GridLayout(1, 5, 10, 0));
+        menuPanel.setBackground(new Color(94, 17, 90));
+        menuPanel.setBounds(150, 10, 750, 30); // Ajustar tamaño para que los elementos se vean completos
+        pnlNavBar.add(menuPanel);
+
+        String[] navItems = {"Trabajadores", "Planillas", "Informes", "Configuraciones", "Utilitarios"};
+        for (String item : navItems) {
+            JButton button = new JButton(item);
+            button.setForeground(Color.WHITE);
+            button.setFont(new Font("Arial", Font.BOLD, 12));
+            button.setFocusPainted(false);
+            button.setBorderPainted(false);
+            button.setContentAreaFilled(false);
+            menuPanel.add(button);
+        }
+
+        // Botón de salir a la derecha
+        JLabel imgSalir = new JLabel(new ImageIcon(getClass().getResource("/ui/img/salir.png")));
+        imgSalir.setBounds(970, 10, 40, 40); // Posicionar el botón de salir a la derecha
+        imgSalir.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        imgSalir.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (JOptionPane.showConfirmDialog(Planillas.this, "¿Deseas salir?", "Salir", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+                }
+            }
+        });
+        pnlNavBar.add(imgSalir);
+    }
+}

@@ -1,0 +1,124 @@
+package ui;
+
+import java.awt.Color;
+import java.awt.EventQueue;
+import javax.swing.*;
+import model.Empleado;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.lang.classfile.instruction.NewMultiArrayInstruction;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class Planillas extends JFrame implements Runnable {
+ private static final long serialVersionUID = 1L;
+ JLabel lblMensaje, lblEmpleado, lblPC, lblIP, lblFecha, lblHora;
+ 
+ Empleado empleado = new Empleado();
+ Thread thHora = new Thread();
+ 
+ public static void main(String[] args) {
+  EventQueue.invokeLater(new Runnable() {
+   public void run() {
+    try {
+     Planillas frame = new Planillas();
+     frame.setVisible(true);
+    } catch (Exception e) {
+     e.printStackTrace();
+    }
+   }
+  });
+ }
+
+ public Planillas() {
+  setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+  setBounds(0, 0, 1024, 768);
+  getContentPane().setLayout(null);
+  setLocationRelativeTo(null);
+  setUndecorated(true);
+  
+  JPanel pnlLogo = new JPanel();
+  pnlLogo.setBounds(0, 0, 1024, 60);
+  pnlLogo.setBackground(new Color(94, 17, 90));
+  pnlLogo.setLayout(null);
+  getContentPane().add(pnlLogo);
+  
+  JLabel imgLogo = new JLabel(new ImageIcon(Login.class.getResource("/ui/img/logo.png")));
+  imgLogo.setBounds(10, 7, 208, 43);
+  pnlLogo.add(imgLogo);
+
+  JLabel imgSalir = new JLabel(new ImageIcon(Login.class.getResource("/ui/img/salir.png")));
+  imgSalir.setBounds(980, 13, 24, 34);
+  pnlLogo.add(imgSalir);
+
+  JLabel imgFondo = new JLabel(new ImageIcon(Login.class.getResource("/ui/img/fondoApp.png")));
+  imgFondo.setBounds(0, 100, 1024, 628);
+  getContentPane().add(imgFondo);
+  
+  lblMensaje = new JLabel();
+  lblMensaje.setBounds(20, 51, 1024, 39);
+  getContentPane().add(lblMensaje);
+  
+  lblEmpleado = new JLabel("Empleado : ");
+  lblEmpleado.setBounds(20, 728, 150, 40);
+  getContentPane().add(lblEmpleado);
+  
+  lblPC = new JLabel("PC : ");
+  lblPC.setBounds(300, 728, 150, 40);
+  getContentPane().add(lblPC);
+  
+  lblIP = new JLabel("IP : ");
+  lblIP.setBounds(500, 728, 150, 40);
+  getContentPane().add(lblIP);
+  
+  lblFecha = new JLabel("Fecha : ");
+  lblFecha.setBounds(700, 728, 150, 40);
+  getContentPane().add(lblFecha);
+  
+  lblHora = new JLabel("Hora : ");
+  lblHora.setBounds(900, 728, 150, 40);
+  getContentPane().add(lblHora);
+  
+  addWindowListener(new WindowAdapter() {
+   @Override
+   public void windowOpened(WindowEvent e) { form_windowOpened(); } });
+  
+  imgSalir.addMouseListener(new MouseAdapter() {
+   @Override public void mouseClicked(MouseEvent e) { imgSalir_mouseClicked(); } });
+  
+ }
+ 
+ public void form_windowOpened() {
+  lblMensaje.setText("Hola " + empleado.getApellidoPAterno() + ", Bienvenido al sistema de planilla");
+  lblEmpleado.setText(String.format("Empleado : %s %s %s", empleado.getNombres(), empleado.getApellidoPAterno(), empleado.getApellidoMAterno()));
+  lblPC.setText("PC : ");
+  lblIP.setText("IP : ");
+  lblFecha.setText(new SimpleDateFormat("'Fecha :' dd/MM/yyyy").format(new Date()) );
+  thHora.start();
+ }
+ 
+ public void setEmpleado(Empleado empleado) {
+  this.empleado = empleado;
+ }
+ 
+ protected void imgSalir_mouseClicked() {
+  if (JOptionPane.showConfirmDialog(this, "¿Deseas salir?", "Salir", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) 
+   thHora.interrupt();
+   System.exit(0);
+    }
+
+ @Override
+ public void run() {
+  SimpleDateFormat df = new SimpleDateFormat("hh:mm:ss");
+  while (true) {
+   lblHora.setText( df.format( new Date() ) );
+   try { thHora.sleep(1000);
+   } catch (InterruptedException e) { e.printStackTrace(); }
+  }
+ }
+ 
+ 
+}

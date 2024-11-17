@@ -1,0 +1,146 @@
+package ui;
+
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.EventQueue;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+import model.Empleado;
+
+public class Planillas extends JFrame {
+
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
+    private JLabel lblMensaje, lblEmpleado, lblPC, lblIP, lblFecha, lblHora;
+    private Empleado empleado;
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> {
+            try {
+                Planillas frame = new Planillas();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public Planillas() {
+        setTitle("Sistema de Planillas");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 1024, 768);
+        setLayout(null);
+        setUndecorated(true);
+
+        contentPane = new JPanel();
+        contentPane.setLayout(null);
+        setContentPane(contentPane);
+
+        JLabel fondoApp = new JLabel(new ImageIcon(getClass().getResource("/ui/img/fondoApp.png")));
+        fondoApp.setBounds(0, 0, 1024, 768);
+        contentPane.add(fondoApp);
+
+        crearBarraDeNavegacion();
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                formWindowOpened();
+            }
+        });
+    }
+
+    private void crearBarraDeNavegacion() {
+        JPanel pnlNavBar = new JPanel();
+        pnlNavBar.setBackground(new Color(94, 17, 90));
+        pnlNavBar.setBounds(0, 0, 1024, 50);
+        pnlNavBar.setLayout(null);
+        contentPane.add(pnlNavBar);
+
+        ImageIcon originalLogo = new ImageIcon(getClass().getResource("/ui/img/logo.png"));
+        Image resizedLogo = originalLogo.getImage().getScaledInstance(140, 35, Image.SCALE_SMOOTH);
+        JLabel imgLogo = new JLabel(new ImageIcon(resizedLogo));
+        imgLogo.setBounds(6, 5, 150, 50);
+        pnlNavBar.add(imgLogo);
+
+        JPanel menuPanel = new JPanel(new GridLayout(1, 5, 10, 0));
+        menuPanel.setBackground(new Color(94, 17, 90));
+        menuPanel.setBounds(150, 10, 750, 30);
+        pnlNavBar.add(menuPanel);
+
+        String[] navItems = {"Trabajadores", "Planillas", "Informes", "Configuraciones", "Utilitarios"};
+        for (String item : navItems) {
+            JButton button = new JButton(item);
+            button.setForeground(Color.WHITE);
+            button.setFont(new Font("Arial", Font.BOLD, 12));
+            button.setFocusPainted(false);
+            button.setBorderPainted(false);
+            button.setContentAreaFilled(false);
+            menuPanel.add(button);
+        }
+
+        JLabel imgSalir = new JLabel(new ImageIcon(getClass().getResource("/ui/img/salir.png")));
+        imgSalir.setBounds(970, 5, 40, 40);
+        imgSalir.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        imgSalir.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                imgSalirMouseClicked();
+            }
+        });
+        pnlNavBar.add(imgSalir);
+
+        // Mover los JLabel debajo de imgSalir
+        lblMensaje = new JLabel();
+        lblMensaje.setBounds(20, 51, 1024, 39);
+        contentPane.add(lblMensaje);
+
+        lblEmpleado = new JLabel("Empleado :");
+        lblEmpleado.setBounds(20, 728, 150, 40);
+        contentPane.add(lblEmpleado);
+
+        lblPC = new JLabel("PC :");
+        lblPC.setBounds(400, 728, 100, 40);
+        contentPane.add(lblPC);
+
+        lblIP = new JLabel("IP :");
+        lblIP.setBounds(550, 728, 100, 40);
+        contentPane.add(lblIP);
+
+        lblFecha = new JLabel("Fecha :");
+        lblFecha.setBounds(700, 728, 100, 40);
+        contentPane.add(lblFecha);
+
+        lblHora = new JLabel("Hora :");
+        lblHora.setBounds(850, 728, 100, 40);
+        contentPane.add(lblHora);
+    }
+
+    protected void formWindowOpened() {
+        if (empleado != null) {
+            lblEmpleado.setText("Hola " + empleado.getApellidoPaterno() + ", bienvenido al sistema de planillas");
+        }
+    }
+
+    public void setEmpleado(Empleado empleado) {
+        this.empleado = empleado;
+    }
+
+    protected void imgSalirMouseClicked() {
+        if (JOptionPane.showConfirmDialog(this, "¿Deseas salir?", "Salir", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
+    }
+}

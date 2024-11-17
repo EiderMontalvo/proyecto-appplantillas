@@ -1,0 +1,4 @@
+INDEX VERSION 1.134+C:\Users\anonimo\Documents\SENATI\2do CICLO\java fundamentals\proyecto-appplantillas\.metadata\.plugins\org.eclipse.jdt.core
+1067094681.index
+1865797976.index
+469970334.index

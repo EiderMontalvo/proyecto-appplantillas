@@ -1,0 +1,120 @@
+package ui;
+
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.FlowLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import model.Empleado;
+
+public class Planillas extends JFrame {
+
+    private static final long serialVersionUID = 1L;
+    private JLabel lblMensaje, lblEmpleado, lblPC, lblIP, lblFecha, lblHora;
+    private Empleado empleado = new Empleado();
+    private Thread thHora;
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> {
+            try {
+                Planillas frame = new Planillas();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public Planillas() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(0, 0, 1024, 600); // Ajustar el alto a 600
+        setLocationRelativeTo(null);
+        setUndecorated(true);
+        getContentPane().setLayout(null);
+
+        // Panel para la barra de navegación
+        JPanel pnlNavBar = new JPanel();
+        pnlNavBar.setBounds(0, 0, 1024, 60);
+        pnlNavBar.setBackground(new Color(94, 17, 90));
+        pnlNavBar.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        getContentPane().add(pnlNavBar);
+
+        // Logo en la barra de navegación
+        JLabel imgLogo = new JLabel(new ImageIcon(new ImageIcon(getClass().getResource("/ui/img/logo.png"))
+                .getImage().getScaledInstance(150, 40, Image.SCALE_SMOOTH)));
+        pnlNavBar.add(imgLogo);
+
+        // Menú de navegación
+        String[] menuItems = {"TRABAJADORES", "PLANILLAS", "INFORMES", "CONFIGURACIONES", "UTILITARIOS"};
+        for (String item : menuItems) {
+            JButton btnMenu = new JButton(item);
+            btnMenu.setForeground(Color.WHITE);
+            btnMenu.setBackground(new Color(94, 17, 90));
+            btnMenu.setFont(new Font("Arial", Font.BOLD, 14));
+            btnMenu.setBorderPainted(false);
+            btnMenu.setFocusPainted(false);
+            pnlNavBar.add(btnMenu);
+        }
+
+        // Iconos de control (configuración, minimizar, cerrar)
+        JLabel iconSettings = new JLabel(new ImageIcon(new ImageIcon(getClass().getResource("/ui/img/settings.png"))
+                .getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH)));
+        pnlNavBar.add(iconSettings);
+
+        JLabel iconMinimize = new JLabel(new ImageIcon(new ImageIcon(getClass().getResource("/ui/img/minimize.png"))
+                .getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH)));
+        pnlNavBar.add(iconMinimize);
+
+        JLabel iconClose = new JLabel(new ImageIcon(new ImageIcon(getClass().getResource("/ui/img/close.png"))
+                .getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH)));
+        iconClose.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (JOptionPane.showConfirmDialog(null, "¿Desea salir?", "Salir", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+                }
+            }
+        });
+        pnlNavBar.add(iconClose);
+
+        // Fondo y etiquetas de información debajo de la barra de navegación
+        JLabel imgFondo = new JLabel(new ImageIcon(getClass().getResource("/ui/img/fondoApp.png")));
+        imgFondo.setBounds(0, 60, 1024, 460);
+        getContentPane().add(imgFondo);
+
+        lblMensaje = new JLabel();
+        lblMensaje.setBounds(20, 530, 1024, 30);
+        getContentPane().add(lblMensaje);
+
+        lblEmpleado = new JLabel("Empleado : ");
+        lblEmpleado.setBounds(20, 570, 150, 30);
+        getContentPane().add(lblEmpleado);
+
+        lblPC = new JLabel("PC : ");
+        lblPC.setBounds(200, 570, 150, 30);
+        getContentPane().add(lblPC);
+
+        lblIP = new JLabel("IP : ");
+        lblIP.setBounds(380, 570, 150, 30);
+        getContentPane().add(lblIP);
+
+        lblFecha = new JLabel("Fecha : ");
+        lblFecha.setBounds(560, 570, 150, 30);
+        getContentPane().add(lblFecha);
+
+        lblHora = new JLabel("Hora : ");
+        lblHora.setBounds(740, 570, 150, 30);
+        getContentPane().add(lblHora);
+    }
+}
